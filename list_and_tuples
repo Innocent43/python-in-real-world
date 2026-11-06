@@ -1,0 +1,69 @@
+# 13. Pharmacy Stock Reorder
+# Scenario: A pharmacy tracks quantities [12, 3, 8, 1, 15] for five products and their names in a second list. Anything
+# below 5 units should be reordered.
+# Your task: Create a list of (product_name, quantity) tuples for products requiring reorder, sorted from lowest stock to
+# highest.
+# Example: For names ["Soap","Bandage","Gloves","Syringe","Mask"] -> [("Syringe",1),("Bandage",3)]
+# Requirement: Use lists for inventory and tuples for fixed product-quantity pairs.
+
+
+# Solution
+names = ["Soap", "Bandage", "Gloves", "Syringe", "Mask"]
+quantities = [12, 3, 8, 1, 15]
+reorder = []
+for name, quantity in zip(names, quantities):
+    if quantity < 5:
+        reorder.append((name, quantity))
+reorder.sort(key=lambda pair: pair[1])
+print(reorder)
+
+#  zip() walks two lists together. Each pair is stored as a tuple (name, quantity). append() adds
+# it to the result list. sort(key=...) sorts by tuple item at index 1, the quantity. lambda creates a tiny one-use function.
+
+
+
+# 14. Bus Seat Booking
+# Scenario: A minibus has 12 seats. Booked seat numbers are stored in a list.
+# Your task: Create book_seat(booked, seat_no) that refuses duplicates or out-of-range seats and otherwise updates
+# the list. Return available seats as a tuple.
+# Example: booked=[2,5]; book_seat(booked,5) -> Already booked
+# Requirement: Seats range from 1 through 12.
+
+
+# Solution
+def book_seat(booked, seat_no):
+    if not 1 <= seat_no <= 12:
+        return "Invalid seat", tuple(seat for seat in range(1, 13) if seat not in booked)
+    if seat_no in booked:
+        return "Already booked", tuple(seat for seat in range(1, 13) if seat not in booked)
+    booked.append(seat_no)
+    available = tuple(seat for seat in range(1, 13) if seat not in booked)
+    return "Booked", available
+booked = [2, 5]
+print(book_seat(booked, 5))
+print(book_seat(booked, 7))
+print(book_seat(booked, 13))
+
+
+
+# 15. Weekly Sales Analysis
+# Scenario: A shop records seven daily sales totals in a list.
+# Your task: Find the highest day, lowest day, total and average, then return a tuple (total, average,
+# highest_day_index, lowest_day_index).
+# Example: [200,350,150,400,300,250,350] -> (2000,285.71,3,2)
+# Requirement: Use zero-based indices; handle an empty list explicitly.
+
+
+
+# Solution
+def analyze_sales(sales):
+    if not sales:
+        raise ValueError("sales list cannot be empty")
+    total = sum(sales)
+    average = total / len(sales)
+    highest_day_index = sales.index(max(sales))
+    lowest_day_index = sales.index(min(sales))
+    return (total, round(average, 2), highest_day_index, lowest_day_index)
+print(analyze_sales([200, 350, 150, 400, 300, 250, 350]))
+print(analyze_sales([10]))
+print(analyze_sales([5, 5, 5]))

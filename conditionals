@@ -1,0 +1,82 @@
+# 3 | Conditionals
+# 07. Bank ATM Withdrawal
+# Scenario: An ATM must prevent invalid withdrawals. A customer has NGN 52,000, and the daily remaining limit is
+# NGN 30,000.
+# Your task: Ask for withdrawal amount; reject amounts <= 0, amounts not divisible by 1,000, amounts above balance
+# or above remaining daily limit. Otherwise show updated balance.
+# Example: Input: 25000 -> Approved. New balance: NGN 27000
+# Requirement: Check conditions in a logical order and use if/elif/else.
+
+# Solution
+
+balance = 52_000
+daily_limit = 30_000
+amount = int(input("Withdrawal amount: "))
+if amount <= 0:
+    print("Rejected: amount must be positive")
+elif amount % 1000 != 0:
+    print("Rejected: amount must be a multiple of 1000")
+elif amount > balance:
+    print("Rejected: insufficient balance")
+elif amount > daily_limit:
+    print("Rejected: daily limit exceeded")
+else:
+    balance -= amount
+    daily_limit -= amount
+    print(f"Approved. New balance: NGN {balance}")
+
+
+
+# 8. Hospital Triage Queue
+# Scenario: A clinic assigns priority based on urgency: emergency symptoms = Priority 1; age >= 65 or temperature
+# >= 39.0 C = Priority 2; everyone else = Priority 3.
+# Your task: Read age, temperature and whether emergency symptoms are present. Print priority and a short
+# explanation.
+# Example: age=70, temp=37.0, emergency=False -> Priority 2
+# Requirement: Emergency takes precedence over all other conditions.
+
+# Solution
+
+age = 70
+temperature = 37.0
+emergency = False
+if emergency:
+    priority = 1
+    explanation = "Emergency symptoms require immediate attention."
+elif age >= 65 or temperature >= 39.0:
+    priority = 2
+    explanation = "Older age or high temperature increases urgency."
+else:
+    priority = 3
+    explanation = "No listed urgent condition."
+print(f"Priority {priority}: {explanation}")
+
+# or means either condition may be true. The emergency branch is first because it must
+# override every other rule. Assigning priority and explanation keeps the decision and its reason together.
+
+
+# 9. Loan Application Pre-Screener
+# Scenario: A cooperative uses preliminary rules: applicant age >= 21, income >= NGN 80,000 monthly, and existing
+# monthly debt <= 40% of income.
+# Your task: Build a decision program that prints Eligible or Not eligible, plus every failed condition.
+# Example: age=24, income=100000, debt=45000 -> Not eligible: debt ratio too high
+# Requirement: This is a programming simulation, not financial advice.
+
+
+# Solution
+age = 24
+income = 100_000
+monthly_debt = 45_000
+failures = []
+if age < 21:
+    failures.append("age must be at least 21")
+if income < 80_000:
+    failures.append("income must be at least NGN 80,000")
+if income <= 0:
+    failures.append("income must be positive")
+elif monthly_debt / income > 0.40:
+    failures.append("debt ratio too high")
+if failures:
+    print("Not eligible: " + "; ".join(failures))
+else:
+    print("Eligible")
